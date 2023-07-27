@@ -6,15 +6,14 @@ import org.modelmapper.ModelMapper;
 import service.StudentService;
 
 import javax.inject.Inject;
-import javax.mvc.binding.BindingResult;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Path("student")
@@ -37,18 +36,18 @@ public class StudentController {
         Student newSt = new Student();
         mapper.map(dto, newSt);
         int newId = studentService.add(newSt);
-        Map<String, Integer> result = new HashMap<>();
-        result.put("newId", newId);
-        return Response.status(Response.Status.OK).entity(result).build();
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("newId", newId).build();
+        return Response.status(Response.Status.OK).entity(jsonObject).build();
     }
 
     @PATCH
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(Student st) throws InvocationTargetException, IllegalAccessException {
         studentService.update(st);
-        Map<String, String> result = new HashMap<>();
-        result.put("success", "true");
-        return Response.status(Response.Status.OK).entity(result).build();
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("success", "true").build();
+        return Response.status(Response.Status.OK).entity(jsonObject).build();
     }
 
     @DELETE
@@ -56,9 +55,9 @@ public class StudentController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id) throws BadRequestException {
         studentService.remove(id);
-        Map<String, String> result = new HashMap<>();
-        result.put("success", "true");
-        return Response.status(Response.Status.OK).entity(result).build();
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("success", "true").build();
+        return Response.status(Response.Status.OK).entity(jsonObject).build();
     }
 
     @GET
