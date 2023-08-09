@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  app:
+    container_name: "app"
+#    restart: on-failure
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+
+    ports:
+      - "8080:8080" # application
+      - "9990:9990" # admin console
+    networks:
+      javaee-mysql-net:
+
+  db:
+    container_name: "db"
+    image: "mysql:8.1.0"
+    environment:
+      - MYSQL_DATABASE=demo-j2ee
+      - MYSQL_ROOT_PASSWORD=root
+#    volumes:
+#      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
+#    command: --init-file /docker-entrypoint-initdb.d/data.sql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost' ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      javaee-mysql-net:
+
+networks:
+  javaee-mysql-net:
