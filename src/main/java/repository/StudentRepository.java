@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -45,6 +46,8 @@ public class StudentRepository {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Student> criteria = cb.createQuery(Student.class);
         Root<Student> student = criteria.from(Student.class);
+//        CriteriaUpdate<Student> criteriaUpdate = cb.createCriteriaUpdate(Student.class);
+//        Root<Student> student2 = criteriaUpdate.from(Student.class);
         criteria.select(student).where(cb.like(student.get("name"), "%" + name + "%"));
         return em.createQuery(criteria).getResultList();
     }

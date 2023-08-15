@@ -19,8 +19,7 @@ public class StudentServiceTest {
 
     @Before
     public void initialize() {
-        this.studentService = new StudentService();
-        this.studentService.studentRepository = studentRepository;
+        this.studentService = new StudentService(studentRepository);
     }
 
     @Test

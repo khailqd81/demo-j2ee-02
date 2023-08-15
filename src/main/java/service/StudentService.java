@@ -13,7 +13,15 @@ import java.util.List;
 @RequestScoped
 public class StudentService {
     @Inject
-    public StudentRepository studentRepository;
+    private StudentRepository studentRepository;
+
+    public StudentService() {
+    }
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+
     public List<Student> findAll(){
         return studentRepository.findAll();
     }
